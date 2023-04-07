@@ -7,11 +7,11 @@ from scipy.stats import norm
 chat_id = 707776914 # Ваш chat ID, не меняйте название переменной
 
 def solution(p: float, x: np.array) -> tuple:
+    alpha = 1 - p
     n = len(x)
-    mean = np.mean(x)
-    std_error = np.std(x, ddof=1) / np.sqrt(n)
-    t_value = t.ppf(1 - (1 - p) / 2, n - 1)
-    margin_of_error = t_value * std_error
-    lower_bound = mean - margin_of_error
-    upper_bound = mean + margin_of_error
-    return (lower_bound, upper_bound)
+    s = np.sum(x)
+    x_mean = s / n
+    left = (-np.log(alpha/2 + 1/2) - x_mean)/(68**2)
+    right = (-np.log(3/2 - alpha/2) - x_mean)/(68**2)
+    return left, \
+           right
